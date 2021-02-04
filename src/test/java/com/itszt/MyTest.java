@@ -1,8 +1,10 @@
 package com.itszt;
 
 
+import com.itszt.gold.Man;
 import com.itszt.gold.Student;
 import com.itszt.gold.Teacher;
+import com.itszt.gold.invokebeanfactorypostprocessors.BeanDefinitionNewBean;
 import com.itszt.gold.lookup.ShowSexClass;
 import org.junit.Test;
 import org.springframework.beans.factory.xml.DefaultNamespaceHandlerResolver;
@@ -34,5 +36,25 @@ public class MyTest {
     public void testFact2() {
         DefaultNamespaceHandlerResolver  defaultNamespaceHandlerResolver= new DefaultNamespaceHandlerResolver();
         System.out.println("defaultNamespaceHandlerResolver = " + defaultNamespaceHandlerResolver);
+    }
+
+    @Test
+    public void testFact3() {
+        /***测试BeanDefinitionRigstryPostProcessor**/
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        Man bean = context.getBean(Man.class);
+        System.out.println("bean = " + bean.getName());
+
+    }
+
+
+    @Test
+    public void testFact4() {
+        /**扫描器,添加过滤自定义注解,扫描创建和注册BeanDefinition**/
+        /***测试BeanDefinitionRigstryPostProcessor**/
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        BeanDefinitionNewBean bean = context.getBean(BeanDefinitionNewBean.class);
+        System.out.println("bean = " + bean.getName());
+
     }
 }

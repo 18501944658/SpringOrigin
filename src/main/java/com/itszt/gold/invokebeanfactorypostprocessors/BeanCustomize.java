@@ -1,14 +1,22 @@
 package com.itszt.gold.invokebeanfactorypostprocessors;
 
+import com.itszt.gold.Man;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
+import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
 
-/**定义执行是在实例化之前,可以完成BeanDefinition的修改和注册,beanDefinition的增删改查**/
+/**
+ * 定义执行是在实例化之前,可以完成BeanDefinition的修改和注册,beanDefinition的增删改查
+ **/
+
 /**beanFactory后置处理器,Spring容器初始化时,从资源中读取到bean的相关定义后,保存在BeanDefinitionMap,
  * 在实例化bean的操作就时一句这些bean的定义来做的,而在实例化之前,Spring允许我们通过自定义扩展来改变
  * bean的定义,定义一旦变了,后面的实例也就变了,而beanFactory后置处理器,即BeanFactoryPostProcessor就是
@@ -26,18 +34,31 @@ public class BeanCustomize implements BeanDefinitionRegistryPostProcessor {
      */
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
 
-        String[] beanDefinitionNames = registry.getBeanDefinitionNames();
-        System.out.println("---------------------BeanDefinitionRegistry---------------------");
-        for (int i = 0; i < beanDefinitionNames.length; i++) {
-//            System.out.println(beanDefinitionNames[i]);
-            if (beanDefinitionNames[i].equals("student")){
-                BeanDefinition student = registry.getBeanDefinition("student");
-                System.out.println("student = " + student);
-                student.setLazyInit(true);
-                System.out.println("student = " + student);
-            }
-        }
-        System.out.println("---------------------BeanDefinitionRegistry---------------------");
+//        String[] beanDefinitionNames = registry.getBeanDefinitionNames();
+//        System.out.println("---------------------BeanDefinitionRegistry---------------------");
+//        for (int i = 0; i < beanDefinitionNames.length; i++) {
+////            System.out.println(beanDefinitionNames[i]);
+//            if (beanDefinitionNames[i].equals("student")){
+//                BeanDefinition student = registry.getBeanDefinition("student");
+//                System.out.println("student = " + student);
+//                student.setLazyInit(true);
+//                System.out.println("student = " + student);
+//            }
+//        }
+//        System.out.println("---------------------BeanDefinitionRegistry---------------------");
+       /**自定义依赖注入***/
+//        GenericBeanDefinition genericBeanDefinition = new GenericBeanDefinition();
+//        genericBeanDefinition.setBeanClass(Man.class);
+//        MutablePropertyValues mutablePropertyValues = new MutablePropertyValues();
+//        mutablePropertyValues.add("name", "heihei");
+//        genericBeanDefinition.setPropertyValues(mutablePropertyValues);
+//        registry.registerBeanDefinition("man",genericBeanDefinition);
+
+        /**扫描器**/
+        ClassPathBeanDefinitionScanner scanner= new ClassPathBeanDefinitionScanner(registry);
+        /**需要过滤的注解*/
+        scanner.addIncludeFilter(new AnnotationTypeFilter(NewAnnodation.class));
+        scanner.scan("com.itszt");
 
     }
 
