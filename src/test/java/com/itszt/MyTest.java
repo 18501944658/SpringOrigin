@@ -4,6 +4,7 @@ package com.itszt;
 import com.itszt.gold.Man;
 import com.itszt.gold.Student;
 import com.itszt.gold.Teacher;
+import com.itszt.gold.even.EnjoyEvent;
 import com.itszt.gold.invokebeanfactorypostprocessors.BeanDefinitionNewBean;
 import com.itszt.gold.lookup.ShowSexClass;
 import org.junit.Test;
@@ -27,14 +28,14 @@ public class MyTest {
     @Test
     public void testFact1() {
         /**look-up**/
-        ClassPathXmlApplicationContext context= new ClassPathXmlApplicationContext("spring.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         ShowSexClass people = (ShowSexClass) context.getBean("people");
         people.showSex();
     }
 
     @Test
     public void testFact2() {
-        DefaultNamespaceHandlerResolver  defaultNamespaceHandlerResolver= new DefaultNamespaceHandlerResolver();
+        DefaultNamespaceHandlerResolver defaultNamespaceHandlerResolver = new DefaultNamespaceHandlerResolver();
         System.out.println("defaultNamespaceHandlerResolver = " + defaultNamespaceHandlerResolver);
     }
 
@@ -55,6 +56,15 @@ public class MyTest {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         BeanDefinitionNewBean bean = context.getBean(BeanDefinitionNewBean.class);
         System.out.println("bean = " + bean.getName());
+    }
+
+
+    @Test
+    public void testFact5() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        context.publishEvent(new EnjoyEvent("lijinjian", "enjoyEvent"));
+        context.start();
+        context.stop();
 
     }
 }
