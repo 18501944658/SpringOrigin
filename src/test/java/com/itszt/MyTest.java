@@ -4,6 +4,7 @@ package com.itszt;
 import com.itszt.gold.Man;
 import com.itszt.gold.Student;
 import com.itszt.gold.Teacher;
+import com.itszt.gold.even.EnjoyApplicationListener;
 import com.itszt.gold.even.EnjoyEvent;
 import com.itszt.gold.invokebeanfactorypostprocessors.BeanDefinitionNewBean;
 import com.itszt.gold.lookup.ShowSexClass;
@@ -61,10 +62,13 @@ public class MyTest {
 
     @Test
     public void testFact5() {
+        /**事件监听**/
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        /**有时候我们需要在容器初始化后在添加监听事件**/
+        context.addApplicationListener(new EnjoyApplicationListener());
         context.publishEvent(new EnjoyEvent("lijinjian", "enjoyEvent"));
-        context.start();
-        context.stop();
-
+//        context.start();
+//        context.stop();
     }
+
 }
