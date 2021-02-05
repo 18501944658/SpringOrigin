@@ -33,7 +33,7 @@ public class BeanCustomize implements BeanDefinitionRegistryPostProcessor {
      * @throws BeansException
      */
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-
+       /**遍历所有已经注册的BeanDefinition对象**/
 //        String[] beanDefinitionNames = registry.getBeanDefinitionNames();
 //        System.out.println("---------------------BeanDefinitionRegistry---------------------");
 //        for (int i = 0; i < beanDefinitionNames.length; i++) {
@@ -56,7 +56,7 @@ public class BeanCustomize implements BeanDefinitionRegistryPostProcessor {
 
         /**扫描器**/
         ClassPathBeanDefinitionScanner scanner= new ClassPathBeanDefinitionScanner(registry);
-        /**需要过滤的注解*/
+        /**需要过滤的注解,添加新的过滤注解*/
         scanner.addIncludeFilter(new AnnotationTypeFilter(NewAnnodation.class));
         scanner.scan("com.itszt");
 
