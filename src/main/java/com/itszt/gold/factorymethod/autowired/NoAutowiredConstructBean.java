@@ -9,29 +9,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /***
- * 多个构造函数
+ *  实例化没有@AutoWired有参构造
+ *  多个不同参数的构造函数,需指定默认构造函数(即无参构造函数)
  */
 @Data
 //@Component
-public class AutowiredConstructBeanMulti {
+public class NoAutowiredConstructBean {
+    /**
+     * 实例化没有@AutoWired多个有参构造,
+     * 默认指定无参构造函数
+     */
+    public NoAutowiredConstructBean() {
+    }
 
     /***
      * @AutoWired注解的方法或者属性都会触发getBean操作
      *
-     * 多个构造函数则会排序只实例化一个,会根据默认参数个数进行排序
-     *
-     * 一个类中定义多个构造函数,不报错这在构造方法上加@Autowired(required = false)
      * @param cq
      * @param hb
      */
-//    @Autowired(required = false)
-    public AutowiredConstructBeanMulti(CQ cq, HB hb) {
+    public NoAutowiredConstructBean(CQ cq, HB hb) {
         System.out.println("cq = " + cq);
         System.out.println("hb = " + hb);
     }
 
-//    @Autowired(required = false)
-    public AutowiredConstructBeanMulti(CQ cq) {
+
+    public NoAutowiredConstructBean(CQ cq) {
         System.out.println("cq = " + cq);
     }
 }

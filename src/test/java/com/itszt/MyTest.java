@@ -6,8 +6,7 @@ import com.itszt.gold.Student;
 import com.itszt.gold.Teacher;
 import com.itszt.gold.even.EnjoyApplicationListener;
 import com.itszt.gold.even.EnjoyEvent;
-import com.itszt.gold.factorymethod.autowired.AutowiredConstructBean;
-import com.itszt.gold.factorymethod.autowired.AutowiredConstructBeanMulti;
+import com.itszt.gold.factorymethod.autowired.*;
 import com.itszt.gold.invokebeanfactorypostprocessors.BeanDefinitionNewBean;
 import com.itszt.gold.lookup.ShowSexClass;
 import org.junit.Test;
@@ -61,7 +60,7 @@ public class MyTest {
         System.out.println("bean = " + bean.getName());
     }
 
-
+    /**========================================事件监听==================================================================*/
     @Test
     public void testFact5() {
         /**事件监听**/
@@ -72,13 +71,14 @@ public class MyTest {
 //        context.start();
 //        context.stop();
     }
+    /**========================================事件监听==================================================================*/
 
+    /**========================================factory-method==================================================================*/
     @Test
     public void testFact6() {
         /**factroy-method**/
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         Man jinjian = (Man) context.getBean("xianghaha");
-//        Man jinjian = (Man) context.getBean("jinjian");
         System.out.println("jinjian = " + jinjian);
         System.out.println("jinjian = " + jinjian.getName());
         System.out.println("jinjian = " + jinjian.getSex());
@@ -105,6 +105,33 @@ public class MyTest {
         /**@AutoWired多个有参构造函数**/
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         AutowiredConstructBeanMulti obj= (AutowiredConstructBeanMulti) context.getBean("autowiredConstructBeanMulti");
+        System.out.println("obj = " + obj);
+    }
+
+    @Test
+    public void testFact10() {
+        /**实例化没有@AutoWired有参构造**/
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        NoAutowiredConstructBean obj= (NoAutowiredConstructBean) context.getBean("noAutowiredConstructBean");
+        System.out.println("obj = " + obj);
+    }
+
+    @Test
+    public void testFact11() {
+        /**实例化无参构造**/
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        NoConstructBean obj= (NoConstructBean) context.getBean("noConstructBean");
+        System.out.println("obj = " + obj);
+    }
+
+    /**========================================factory-method==================================================================*/
+
+
+    @Test
+    public void testFact12() {
+        /**实例化无参构造**/
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        AutowiredBean obj= (AutowiredBean) context.getBean("autowiredBean");
         System.out.println("obj = " + obj);
     }
 }

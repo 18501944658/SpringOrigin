@@ -4,7 +4,6 @@ package com.itszt.gold.factorymethod.autowired;
 import com.itszt.gold.CQ;
 import com.itszt.gold.HB;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +11,7 @@ import org.springframework.stereotype.Component;
  * 单个构造函数
  */
 @Data
-@Component
-@NoArgsConstructor
+//@Component
 public class AutowiredConstructBean {
 
     /***
@@ -22,7 +20,7 @@ public class AutowiredConstructBean {
      * @param cq
      * @param hb
      */
-    @Autowired
+//    @Autowired
     public AutowiredConstructBean(CQ cq, HB hb) {
         System.out.println("cq = " + cq);
         System.out.println("hb = " + hb);
