@@ -6,6 +6,8 @@ import com.itszt.gold.Student;
 import com.itszt.gold.Teacher;
 import com.itszt.gold.even.EnjoyApplicationListener;
 import com.itszt.gold.even.EnjoyEvent;
+import com.itszt.gold.factorymethod.autowired.AutowiredConstructBean;
+import com.itszt.gold.factorymethod.autowired.AutowiredConstructBeanMulti;
 import com.itszt.gold.invokebeanfactorypostprocessors.BeanDefinitionNewBean;
 import com.itszt.gold.lookup.ShowSexClass;
 import org.junit.Test;
@@ -71,4 +73,38 @@ public class MyTest {
 //        context.stop();
     }
 
+    @Test
+    public void testFact6() {
+        /**factroy-method**/
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        Man jinjian = (Man) context.getBean("xianghaha");
+//        Man jinjian = (Man) context.getBean("jinjian");
+        System.out.println("jinjian = " + jinjian);
+        System.out.println("jinjian = " + jinjian.getName());
+        System.out.println("jinjian = " + jinjian.getSex());
+    }
+    @Test
+    public void testFact7() {
+        /**factroy-method=@Bean**/
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        Man damen = (Man) context.getBean("damen");
+        System.out.println("damen = " + damen);
+        System.out.println("damen = " + damen.getName());
+        System.out.println("damen = " + damen.getSex());
+    }
+
+    @Test
+    public void testFact8() {
+        /**@AutoWired单个有参构造函数**/
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        AutowiredConstructBean obj= (AutowiredConstructBean) context.getBean("autowiredConstructBean");
+        System.out.println("obj = " + obj);
+    }
+    @Test
+    public void testFact9() {
+        /**@AutoWired多个有参构造函数**/
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        AutowiredConstructBeanMulti obj= (AutowiredConstructBeanMulti) context.getBean("autowiredConstructBeanMulti");
+        System.out.println("obj = " + obj);
+    }
 }

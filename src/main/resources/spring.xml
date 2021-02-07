@@ -20,5 +20,12 @@
 <!--        <lookup-method name="getPeople" bean="woman"></lookup-method>-->
 <!--    </bean>-->
 
+    <!--factory-Method-->
+    <!--factoryMethodBean中factoryMethod为非静态方法-->
+<!--    <bean id="factoryMethod" class="com.itszt.gold.factorymethod.FactoryMethodBean"></bean>-->
+<!--    <bean id="jinjian" factory-bean="factoryMethod" factory-method="getFactoryMethod"></bean>-->
 
+    <!--直接引入beanClass,并且beanClass中factoryMethod为静态方法-->
+<!--    <bean id="factoryMethod" class="com.itszt.gold.factorymethod.FactoryMethodBean"></bean>-->
+<!--    <bean id="xianghaha" class="com.itszt.gold.factorymethod.FactoryMethodBeanStatic"  factory-method="getFactoryMethod"></bean>-->
 </beans>

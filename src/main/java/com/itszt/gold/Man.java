@@ -5,7 +5,7 @@ public class Man {
 
     private String name="haha";
 
-    private String sex;
+    private String sex="女";
 
     public String getName() {
         return name;
