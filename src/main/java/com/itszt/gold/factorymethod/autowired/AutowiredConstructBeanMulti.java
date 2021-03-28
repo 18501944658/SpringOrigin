@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * 多个构造函数
  */
 @Data
-//@Component
+@Component
 public class AutowiredConstructBeanMulti {
 
     /***
@@ -24,13 +24,13 @@ public class AutowiredConstructBeanMulti {
      * @param cq
      * @param hb
      */
-//    @Autowired(required = false)
+    @Autowired(required = false)
     public AutowiredConstructBeanMulti(CQ cq, HB hb) {
         System.out.println("cq = " + cq);
         System.out.println("hb = " + hb);
     }
 
-//    @Autowired(required = false)
+    @Autowired(required = false)
     public AutowiredConstructBeanMulti(CQ cq) {
         System.out.println("cq = " + cq);
     }

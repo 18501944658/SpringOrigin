@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * 单个构造函数
  */
 @Data
-//@Component
+@Component
 public class AutowiredConstructBean {
 
     /***
@@ -20,7 +20,7 @@ public class AutowiredConstructBean {
      * @param cq
      * @param hb
      */
-//    @Autowired
+    @Autowired
     public AutowiredConstructBean(CQ cq, HB hb) {
         System.out.println("cq = " + cq);
         System.out.println("hb = " + hb);

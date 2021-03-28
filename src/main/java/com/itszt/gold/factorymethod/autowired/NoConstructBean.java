@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  *  实例化无参构造
  */
 @Data
-//@Component
+@Component
 public class NoConstructBean {
     /**
      * 实例化无参构造,

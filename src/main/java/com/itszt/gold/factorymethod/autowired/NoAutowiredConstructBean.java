@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  *  多个不同参数的构造函数,需指定默认构造函数(即无参构造函数)
  */
 @Data
-//@Component
+@Component
 public class NoAutowiredConstructBean {
     /**
      * 实例化没有@AutoWired多个有参构造,

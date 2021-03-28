@@ -11,10 +11,12 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AwareBean implements BeanNameAware, BeanFactoryAware, ApplicationContextAware, EnvironmentAware, ImportAware, InitializingBean {
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-
+        System.out.println("beanFactory = " + beanFactory);
     }
 
     public void setBeanName(String name) {

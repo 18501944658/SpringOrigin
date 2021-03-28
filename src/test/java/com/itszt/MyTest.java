@@ -1,12 +1,14 @@
 package com.itszt;
 
 
+import com.itszt.gold.CQ;
 import com.itszt.gold.Man;
 import com.itszt.gold.Student;
 import com.itszt.gold.Teacher;
 import com.itszt.gold.even.EnjoyApplicationListener;
 import com.itszt.gold.even.EnjoyEvent;
 import com.itszt.gold.factorymethod.autowired.*;
+import com.itszt.gold.instantiationAwareBeanPostProcessor.Demo;
 import com.itszt.gold.invokebeanfactorypostprocessors.BeanDefinitionNewBean;
 import com.itszt.gold.lookup.ShowSexClass;
 import org.junit.Test;
@@ -74,6 +76,7 @@ public class MyTest {
     /**========================================事件监听==================================================================*/
 
     /**========================================factory-method==================================================================*/
+
     @Test
     public void testFact6() {
         /**factroy-method**/
@@ -83,6 +86,7 @@ public class MyTest {
         System.out.println("jinjian = " + jinjian.getName());
         System.out.println("jinjian = " + jinjian.getSex());
     }
+
     @Test
     public void testFact7() {
         /**factroy-method=@Bean**/
@@ -100,6 +104,7 @@ public class MyTest {
         AutowiredConstructBean obj= (AutowiredConstructBean) context.getBean("autowiredConstructBean");
         System.out.println("obj = " + obj);
     }
+
     @Test
     public void testFact9() {
         /**@AutoWired多个有参构造函数**/
@@ -133,5 +138,40 @@ public class MyTest {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         AutowiredBean obj= (AutowiredBean) context.getBean("autowiredBean");
         System.out.println("obj = " + obj);
+    }
+
+    /***
+     * 测试实现AwareBean接口
+     */
+    @Test
+    public void testFact13(){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        AutowiredBean obj= (AutowiredBean) context.getBean("autowiredBean");
+        System.out.println("obj = " + obj);
+    }
+
+    /***
+     * 测试实现InstantiationAwareBeanPostProcessor接口
+     * 实现该接口,覆写postProcessAfterInstantiation方法并返回fasle,可以阻止bean的依赖注入
+     */
+    @Test
+    public void testFact14(){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        Demo demo = (Demo) context.getBean("demo");
+        CQ cq = demo.getCq();
+        System.out.println("InstantiationAwareBeanPostProcessor---cQ = " + cq);
+    }
+
+
+    /***
+     * 测试实现依赖注入
+     *
+     */
+    @Test
+    public void testFact15(){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "spring.xml");
+        Demo demo = (Demo) context.getBean("demo");
+        CQ cq = demo.getCq();
+        System.out.println("IOC---cQ = " + cq);
     }
 }
