@@ -5,6 +5,9 @@ import com.itszt.gold.CQ;
 import com.itszt.gold.Man;
 import com.itszt.gold.Student;
 import com.itszt.gold.Teacher;
+import com.itszt.gold.aware.AwareBean1;
+import com.itszt.gold.cycle.CycleBeanAAA;
+import com.itszt.gold.cycle.CycleBeanBBB;
 import com.itszt.gold.even.EnjoyApplicationListener;
 import com.itszt.gold.even.EnjoyEvent;
 import com.itszt.gold.factorymethod.autowired.*;
@@ -146,8 +149,8 @@ public class MyTest {
     @Test
     public void testFact13(){
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-        AutowiredBean obj= (AutowiredBean) context.getBean("autowiredBean");
-        System.out.println("obj = " + obj);
+        AwareBean1 obj= (AwareBean1) context.getBean("awareBean1");
+        System.out.println("测试实现AwareBean接口 = " + obj);
     }
 
     /***
@@ -173,5 +176,19 @@ public class MyTest {
         Demo demo = (Demo) context.getBean("demo");
         CQ cq = demo.getCq();
         System.out.println("IOC---cQ = " + cq);
+    }
+
+
+    /***
+     * 测试循环依赖
+     *
+     */
+    @Test
+    public void testFact16(){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "spring.xml");
+        CycleBeanAAA cycleBeanAAA = (CycleBeanAAA) context.getBean("cycleBeanAAA");
+        CycleBeanBBB cycleBeanBBB = cycleBeanAAA.getCycleBeanBBB();
+        System.out.println("cycleBeanBBB = " + cycleBeanBBB);
+        System.out.println("cycleBeanAAA = " + cycleBeanAAA);
     }
 }
