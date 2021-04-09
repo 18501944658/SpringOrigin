@@ -10,6 +10,7 @@ import com.itszt.gold.cycle.CycleBeanAAA;
 import com.itszt.gold.cycle.CycleBeanBBB;
 import com.itszt.gold.even.EnjoyApplicationListener;
 import com.itszt.gold.even.EnjoyEvent;
+import com.itszt.gold.factorymethod.ApplicationContextAccessor;
 import com.itszt.gold.factorymethod.autowired.*;
 import com.itszt.gold.instantiationAwareBeanPostProcessor.Demo;
 import com.itszt.gold.invokebeanfactorypostprocessors.BeanDefinitionNewBean;
@@ -190,5 +191,16 @@ public class MyTest {
         CycleBeanBBB cycleBeanBBB = cycleBeanAAA.getCycleBeanBBB();
         System.out.println("cycleBeanBBB = " + cycleBeanBBB);
         System.out.println("cycleBeanAAA = " + cycleBeanAAA);
+    }
+
+    /***
+     * 模拟@Bean传参的注解模式
+     *
+     */
+    @Test
+    public void testFact17(){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "spring.xml");
+        ApplicationContextAccessor bean = context.getBean(ApplicationContextAccessor.class);
+        System.out.println("bean = " + bean);
     }
 }

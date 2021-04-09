@@ -16,4 +16,7 @@ public class FactoryMethodBean {
     public Man getFactoryMethod(){
         return new Man();
     }
+
+
+
 }

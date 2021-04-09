@@ -12,20 +12,38 @@
 
     <context:component-scan base-package="com.itszt.gold"></context:component-scan>
 
-<!--    <bean id="teacher" name="laoshi" class="com.itszt.gold.Teacher"></bean>-->
+    <!--    <bean id="teacher" name="laoshi" class="com.itszt.gold.Teacher"></bean>-->
 
     <!--Look-up 可以指定某个实体类的调用方法,用来替代原有的方法-->
-<!--    <bean id="woman" class="com.itszt.gold.lookup.Woman"/>-->
-<!--    <bean id="people" class="com.itszt.gold.lookup.ShowSexClass">-->
-<!--        <lookup-method name="getPeople" bean="woman"></lookup-method>-->
-<!--    </bean>-->
+    <!--    <bean id="woman" class="com.itszt.gold.lookup.Woman"/>-->
+    <!--    <bean id="people" class="com.itszt.gold.lookup.ShowSexClass">-->
+    <!--        <lookup-method name="getPeople" bean="woman"></lookup-method>-->
+    <!--    </bean>-->
 
     <!--factory-Method-->
     <!--factoryMethodBean中factoryMethod为非静态方法-->
-<!--    <bean id="factoryMethod" class="com.itszt.gold.factorymethod.FactoryMethodBean"></bean>-->
-<!--    <bean id="jinjian" factory-bean="factoryMethod" factory-method="getFactoryMethod"></bean>-->
+    <!--    <bean id="factoryMethod" class="com.itszt.gold.factorymethod.FactoryMethodBean"></bean>-->
+    <!--    <bean id="jinjian" factory-bean="factoryMethod" factory-method="getFactoryMethod"></bean>-->
 
     <!--直接引入beanClass,并且beanClass中factoryMethod为静态方法-->
-<!--    <bean id="factoryMethod" class="com.itszt.gold.factorymethod.FactoryMethodBean"></bean>-->
-<!--    <bean id="xianghaha" class="com.itszt.gold.factorymethod.FactoryMethodBeanStatic"  factory-method="getFactoryMethod"></bean>-->
+    <!--    <bean id="factoryMethod" class="com.itszt.gold.factorymethod.FactoryMethodBean"></bean>-->
+    <!--    <bean id="xianghaha" class="com.itszt.gold.factorymethod.FactoryMethodBeanStatic"  factory-method="getFactoryMethod"></bean>-->
+
+
+    <!--创建直接获取bean的工具类-->
+    <!--这是factory-Bean-->
+    <!--模拟@Bean传参数注解
+       /**@Bean等同于直接引用另一个类中FactroyMethodBean中非静态FactoryMethod方法**/
+    @Bean("applicationContextAccessor")
+    public ApplicationContextAccessor getApplicationContextAccessor(ApplicationContext applicationContext){
+        return new ApplicationContextAccessor(applicationContext);
+    }
+    -->
+    <bean id="factoryMethodApplicationContext" class="com.itszt.gold.factorymethod.FactoryApplicationContext">
+    </bean>
+    <bean id="applicationContextAccessor" factory-bean="factoryMethodApplicationContext"
+          factory-method="getFactoryMethod">
+    </bean>
+
+
 </beans>
