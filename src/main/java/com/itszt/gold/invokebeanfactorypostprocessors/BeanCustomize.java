@@ -66,6 +66,8 @@ public class BeanCustomize implements BeanDefinitionRegistryPostProcessor {
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         DefaultListableBeanFactory beanFactory1 = (DefaultListableBeanFactory) beanFactory;
         beanFactory1.setAllowBeanDefinitionOverriding(true);
+        /*当关闭循环依赖后,BeanCustomize这个Bean实例化后,因所有的Bean是for循环形式的遍历创建实例化,
+        * BeanCustomize这个Bean实例化后才会将是否循环引用关闭,所以在BeanCustomize实例化后的Bean的循环引用才会是false**/
         beanFactory1.setAllowCircularReferences(true);
     }
 }

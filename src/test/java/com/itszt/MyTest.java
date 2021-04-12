@@ -187,10 +187,8 @@ public class MyTest {
     @Test
     public void testFact16(){
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "spring.xml");
-        CycleBeanAAA cycleBeanAAA = (CycleBeanAAA) context.getBean("cycleBeanAAA");
-        CycleBeanBBB cycleBeanBBB = cycleBeanAAA.getCycleBeanBBB();
-        System.out.println("cycleBeanBBB = " + cycleBeanBBB);
-        System.out.println("cycleBeanAAA = " + cycleBeanAAA);
+        CycleBeanAAA cycleBeanAAA =  context.getBean(CycleBeanAAA.class);
+        CycleBeanBBB cycleBeanBBB =  context.getBean(CycleBeanBBB.class);
     }
 
     /***
