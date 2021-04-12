@@ -9,8 +9,11 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
+@Lazy
 public class CycleBeanAAAConstrct {
+
      @Lazy
+     /**@Lazy注解,会生成一个CycleBeanBBBConstrct 的代理对象,不调用CycleBeanBBBConstrct的getBean操作,所以不会出现循环依赖问题***/
     //会触发入参对象的getBean
     public CycleBeanAAAConstrct(CycleBeanBBBConstrct cycleBeanBBBConstrct) {
         System.out.println("cycleBeanBBBConstrct = " + cycleBeanBBBConstrct);

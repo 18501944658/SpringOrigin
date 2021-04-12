@@ -15,9 +15,11 @@ import com.itszt.gold.factorymethod.autowired.*;
 import com.itszt.gold.instantiationAwareBeanPostProcessor.Demo;
 import com.itszt.gold.invokebeanfactorypostprocessors.BeanDefinitionNewBean;
 import com.itszt.gold.lookup.ShowSexClass;
+import com.itszt.gold.propertValue.PropertyKeyValue;
 import org.junit.Test;
 import org.springframework.beans.factory.xml.DefaultNamespaceHandlerResolver;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.env.Environment;
 
 public class MyTest {
     /***
@@ -66,7 +68,9 @@ public class MyTest {
         System.out.println("bean = " + bean.getName());
     }
 
-    /**========================================事件监听==================================================================*/
+    /**
+     * ========================================事件监听==================================================================
+     */
     @Test
     public void testFact5() {
         /**事件监听**/
@@ -79,7 +83,9 @@ public class MyTest {
     }
     /**========================================事件监听==================================================================*/
 
-    /**========================================factory-method==================================================================*/
+    /**
+     * ========================================factory-method==================================================================
+     */
 
     @Test
     public void testFact6() {
@@ -105,7 +111,7 @@ public class MyTest {
     public void testFact8() {
         /**@AutoWired单个有参构造函数**/
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-        AutowiredConstructBean obj= (AutowiredConstructBean) context.getBean("autowiredConstructBean");
+        AutowiredConstructBean obj = (AutowiredConstructBean) context.getBean("autowiredConstructBean");
         System.out.println("obj = " + obj);
     }
 
@@ -113,7 +119,7 @@ public class MyTest {
     public void testFact9() {
         /**@AutoWired多个有参构造函数**/
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-        AutowiredConstructBeanMulti obj= (AutowiredConstructBeanMulti) context.getBean("autowiredConstructBeanMulti");
+        AutowiredConstructBeanMulti obj = (AutowiredConstructBeanMulti) context.getBean("autowiredConstructBeanMulti");
         System.out.println("obj = " + obj);
     }
 
@@ -121,7 +127,7 @@ public class MyTest {
     public void testFact10() {
         /**实例化没有@AutoWired有参构造**/
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-        NoAutowiredConstructBean obj= (NoAutowiredConstructBean) context.getBean("noAutowiredConstructBean");
+        NoAutowiredConstructBean obj = (NoAutowiredConstructBean) context.getBean("noAutowiredConstructBean");
         System.out.println("obj = " + obj);
     }
 
@@ -129,18 +135,20 @@ public class MyTest {
     public void testFact11() {
         /**实例化无参构造**/
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-        NoConstructBean obj= (NoConstructBean) context.getBean("noConstructBean");
+        NoConstructBean obj = (NoConstructBean) context.getBean("noConstructBean");
         System.out.println("obj = " + obj);
     }
 
-    /**========================================factory-method==================================================================*/
+    /**
+     * ========================================factory-method==================================================================
+     */
 
 
     @Test
     public void testFact12() {
         /**实例化无参构造**/
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-        AutowiredBean obj= (AutowiredBean) context.getBean("autowiredBean");
+        AutowiredBean obj = (AutowiredBean) context.getBean("autowiredBean");
         System.out.println("obj = " + obj);
     }
 
@@ -148,9 +156,9 @@ public class MyTest {
      * 测试实现AwareBean接口
      */
     @Test
-    public void testFact13(){
+    public void testFact13() {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-        AwareBean1 obj= (AwareBean1) context.getBean("awareBean1");
+        AwareBean1 obj = (AwareBean1) context.getBean("awareBean1");
         System.out.println("测试实现AwareBean接口 = " + obj);
     }
 
@@ -159,7 +167,7 @@ public class MyTest {
      * 实现该接口,覆写postProcessAfterInstantiation方法并返回fasle,可以阻止bean的依赖注入
      */
     @Test
-    public void testFact14(){
+    public void testFact14() {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         Demo demo = (Demo) context.getBean("demo");
         CQ cq = demo.getCq();
@@ -172,8 +180,8 @@ public class MyTest {
      *
      */
     @Test
-    public void testFact15(){
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "spring.xml");
+    public void testFact15() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         Demo demo = (Demo) context.getBean("demo");
         CQ cq = demo.getCq();
         System.out.println("IOC---cQ = " + cq);
@@ -185,10 +193,10 @@ public class MyTest {
      *
      */
     @Test
-    public void testFact16(){
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "spring.xml");
-        CycleBeanAAA cycleBeanAAA =  context.getBean(CycleBeanAAA.class);
-        CycleBeanBBB cycleBeanBBB =  context.getBean(CycleBeanBBB.class);
+    public void testFact16() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        CycleBeanAAA cycleBeanAAA = context.getBean(CycleBeanAAA.class);
+        CycleBeanBBB cycleBeanBBB = context.getBean(CycleBeanBBB.class);
     }
 
     /***
@@ -196,9 +204,45 @@ public class MyTest {
      *
      */
     @Test
-    public void testFact17(){
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext( "spring.xml");
+    public void testFact17() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         ApplicationContextAccessor bean = context.getBean(ApplicationContextAccessor.class);
         System.out.println("bean = " + bean);
+    }
+
+    /***
+     * 销毁bean
+     *
+     */
+    @Test
+    public void testFact18() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        context.getBeanFactory().destroyBean(ApplicationContextAccessor.class);
+        context.getBeanFactory().destroySingletons();
+    } 
+    
+    /***
+     *  bean初始化属性值测试
+     *
+     */
+    @Test
+    public void testFact19() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        PropertyKeyValue bean = context.getBean(PropertyKeyValue.class);
+        System.out.println("bean.getName() = " + bean.getName());
+    }
+
+
+    /***
+     *  Environment对象和读取本地配置文件对象的解析测试
+     *
+     *  Environment对象中最主要的属性就是propertySources属性,而propertySources属性本质就是MutableProperySources
+     *
+     */
+    @Test
+    public void testFact20() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        Environment bean = context.getBean(Environment.class);
+        System.out.println("bean= " + bean);
     }
 }

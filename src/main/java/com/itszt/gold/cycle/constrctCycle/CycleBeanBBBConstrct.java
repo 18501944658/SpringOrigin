@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
+@Lazy
 public class CycleBeanBBBConstrct {
+
     @Lazy
     public CycleBeanBBBConstrct(CycleBeanAAAConstrct cycleBeanAAAConstrct) {
         System.out.println("cycleBeanAAAConstrct = " + cycleBeanAAAConstrct);
