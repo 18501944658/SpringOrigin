@@ -16,7 +16,10 @@ import com.itszt.gold.instantiationAwareBeanPostProcessor.Demo;
 import com.itszt.gold.invokebeanfactorypostprocessors.BeanDefinitionNewBean;
 import com.itszt.gold.lookup.ShowSexClass;
 import com.itszt.gold.propertValue.PropertyKeyValue;
+import com.itszt.gold.scope.CustomScope;
+import com.itszt.gold.scope.CustomScopeBean;
 import org.junit.Test;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.xml.DefaultNamespaceHandlerResolver;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.env.Environment;
@@ -244,5 +247,32 @@ public class MyTest {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         Environment bean = context.getBean(Environment.class);
         System.out.println("bean= " + bean);
+    }
+
+    /***
+     * 实现FactoryBean接口,并覆写方法
+     *
+     */
+    @Test
+    public void testFact21() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        /**拿到实现FactoryBean接口的类实际获取的Bean方法**/
+        Student student = (Student) context.getBean("factoryBeanDemo");
+        System.out.println("student = " + student);
+        /**拿到实现FactoryBean接口的类实例本身则需要再BeanName前加&符号**/
+        FactoryBean factoryBean = (FactoryBean) context.getBean("&factoryBeanDemo");
+        System.out.println("factoryBean = " + factoryBean);
+    }
+
+    /***
+     * 自定义scope
+     *
+     */
+    @Test
+    public void testFact22() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        CustomScopeBean bean = context.getBean(CustomScopeBean.class);
+        System.out.println("CustomScopeBean = " + bean);
+
     }
 }
