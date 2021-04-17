@@ -21,7 +21,7 @@ import java.util.UUID;
  * 将对应类注册到BeanDefinitionRegistry中,来实例化的Bean
  * Version 1.0
  */
-@Component
+//@Component
 public class PropertyPlaceHolderBeanDefinition implements BeanDefinitionRegistryPostProcessor {
 
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
