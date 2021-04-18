@@ -24,4 +24,5 @@ public class AnnotationTest {
         SelectImportBeanOne bean = application.getBean(SelectImportBeanOne.class);
         System.out.println("bean = " + bean);
     }
+
 }

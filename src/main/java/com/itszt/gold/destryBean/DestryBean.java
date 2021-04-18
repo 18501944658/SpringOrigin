@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PreDestroy;
 
 @Data
-@Component
+//@Component
 public class DestryBean {
 
     public DestryBean() {

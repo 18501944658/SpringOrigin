@@ -1,0 +1,14 @@
+基于注解
+
+ConfigurationClassPostProcessor implements  BeanDefinitionRegistryPostProcessor
+操作BeanDefinition并加入registry中
+
+AnnotatedBeanDefinition的实现类是ScanAnnotatedBeanDefinition
+
+@PropertySource
+@ComponentScan
+@Bean
+@Import
+@ImportSource
+@Configuration
+ImportSelector

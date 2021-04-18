@@ -1,0 +1,33 @@
+自定义scope和factoryBean接口
+
+1.factoryBean接口
+
+ 实现的getObject方法在容器的启动的时候是不会触发的,只有当工程需要拿到getObject返回的实例的时候才会调用
+
+
+
+2.自定义scope
+
+3.@PropertySource
+
+4.@ComponentScan
+
+
+
+1.通过实现EnvironmentAware接口我们可以手动自定义向Environment对象中插入配置值key-value形式
+        /***
+        * 手动操作向environment对象中放入key-value值,可以通过@Value将值取出
+        * @param environment
+        */
+       public void setEnvironment(Environment environment) {
+          /**转换对象类型为子类,获取子类的getPropertySources对象,我们创建一个PropertiesPropertySource
+           对象将需要key-value值放入Properties中put进PropertiesPropertySource,放入MutablePropertySources中完成**/
+          StandardEnvironment bean =(StandardEnvironment) environment;
+           Properties properties= new Properties();
+           properties.setProperty("gold.love","lijinjainlovexiang");
+           PropertiesPropertySource propertiesPropertySource= new PropertiesPropertySource("propertoesmap",properties);
+           MutablePropertySources propertySources =bean.getPropertySources();
+           propertySources.addLast(propertiesPropertySource);
+       }
+
+
