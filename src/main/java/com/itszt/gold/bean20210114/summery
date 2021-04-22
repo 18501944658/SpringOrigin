@@ -12,7 +12,7 @@
 自定义切面和注解切面排序(整个排序是针对orderd接口和@Order注解的排序)
 1.默认切面永远排第一
 2.自定义切面根据实现的排序接口和排序注解排序
-3.注解形式的切面排序,按原样返回
+3.注解形式的切面排序,按原样返回（针对@Aspect注解形式的切面没有排序）
 
 针对存在@Aspect注解切面,添加了一个默认的切面 DefaultPointCutAdvisor,解决参数传递问题的
 在切面容器中在第一个位置又添加一个默认切面ExposeInvocationInterceptor.ADVISOR,这个切面就
@@ -20,6 +20,75 @@
 @Aspect是链式调用,解决了参数传递问题,在注解方法中可以直接获取MethodInvocation
 
 2.代理生成
+
+被代理实例会存储到new SingletonTargetSource()对象中该类实现了TargetSource接口的对象中
+
+@EnableAspectJAutoProxy(proTargetClass=true) 表示使用cglib的代理,现在我们的类都是没有接口实现的,所以我们必须使用cglib的代理,
+通过反射创建代理实例,就算你设置为fasle没有实现代理的接口,也会使用cglib代理的
+@EnableAspectJAutoProxy(proTargetClass=false) 表示使用JDK的代理
+
+jdk的动态代理目标对象必须实现接口,代理类实现InvocationHandler接口覆写invoke方法,将代理增强功能写在invoke方法中,并调用被代理类方法,
+通过Proxy.newProxyInstance（被代理接口类加载器,被代理类接口,实现Invocationhandler接口的类）;
+
+也可以向下面匿名内部类的方式写:
+
+IUserDao iud = (IUserDao) Proxy.newProxyInstance(ud.getClass().getClassLoader(), ud.getClass().getInterfaces(),
+                new InvocationHandler() {
+
+                    @Override
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                        // TODO Auto-generated method stub
+
+                        Object result = null;
+                        if ("find".equals(method.getName())) {
+                            result = method.invoke(ud, args);
+                        } else {
+                            System.out.println("开始JDK代理");
+                            result = method.invoke(ud, args);
+                            System.out.println("结束JDK代理");
+                        }
+
+                        return result;
+                    }
+                });
+
+                JDK的动态代理也存在不足，即被代理类必须要有实现的接口，如没有接口则无法使用JDK动态代理（从newProxyInstance方法的第二个参数可得知，必须传入被代理类的实现接口），那么需要使用CGLib动态代理。
+
+                CGLIB动态代理
+
+
+                CGLib动态代理是一个第三方实现的动态代理类库，不要求被代理类必须实现接口，它采用的是继承被代理类，使用其子类的方式，弥补了被代理类没有接口的不足，
+
+                要使用CGLib必须要引入第三方类库
+
+                public class MyMethodInterceptor implements MethodInterceptor {
+
+                    @Override
+                    public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+                        // TODO Auto-generated method stub
+
+                        System.out.println("开始CGLib动态代理");
+                        Object object=proxy.invokeSuper(obj, args);
+                        System.out.println("结束CGLib动态代理");
+                        return object;
+                    }
+
+                }
+
+                    public static void main(String[] args) {
+                        // TODO Auto-generated method stub
+
+                        Enhancer enhancer=new Enhancer();
+                        enhancer.setSuperclass(UserDao.class);
+                        enhancer.setCallback(new MyMethodInterceptor());
+                        //生成代理类
+                        UserDao ud=(UserDao) enhancer.create();
+                        ud.save();
+                        System.out.println("----------------");
+                        ud.find();
+
+                    }
+
 
 
 
