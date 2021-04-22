@@ -1,8 +1,14 @@
 ConfigurationClassPostProcessor类源码详解
 
+@Component @ComponentScan @PropertySource @Bean @Import @ImportResource
 
 
 1.condition原理
+
+实现condition接口,覆写matches方法,返回true则注解生效
+
+
+
 
 @Conditional注解
 
@@ -10,9 +16,9 @@ ConfigurationClassPostProcessor类源码详解
 
 @ConditionBean
 
+@ImportResource  导入一个xml的配置文件,和我们解析xml文件一模一样,但是现在大都是注解,不咋用了
 
-
-
+@ComponentScan注解不能扫描到所有的类,有一些类就没有 比如实现ImportSelector和实现BeanAware的接口
 
 2.@Bean的实现原理
 
@@ -40,4 +46,7 @@ ConfigurationClassPostProcessor类源码详解
 
 Parser.parse（）
 解析@Import @Propertysource @ComponentScan @Bean ImportSelector
+
+
+
 

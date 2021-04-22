@@ -1,0 +1,77 @@
+动态代理和AOP的初见
+
+1.各种BeanDefinition的比较
+#将父类属性全部拿到子类,对于存在parent属性的bean标签使用
+RootBeanDefinition
+# xml扫描创建出来的BeanDefinition就是GenericBeanDefinition
+GenericBeanDefinition
+#通过Component-scan扫描得到 new ScannedGenericBeanDefinition(metadata);
+ScannedGenericBeanDefinition
+#@Import进来的和内部类new AnnotatedGenericBeanDefinition(metadata)；
+AnnotatedGenericBeanDefinition
+#@Bean解析得到 new ConfigurationClassBeanDefinition(configclass,metadata)
+ConfigurationClassBeanDefinition
+
+2.动态代理
+
+3.AOP的概念和代理生成
+
+
+Advisor必须要有PointCut,Advice
+
+PointCut 作用:匹配,拦截
+         目的:为了生成代理,用代理对象调用的时候
+
+ClassFilter     类是它拦截  都是pointcut中的对象
+
+MethodMatcher  方法是它匹配    都是pointcut中的对象
+
+Advice  承载了一些增强的逻辑的.
+
+
+AOP调用的时机在bean实例化后
+
+Advice创建2中一种实现Advice接口,一种实现MethodInterceptor接口
+
+
+切面获取流程:
+1、获得Advisor途径有两个:  自己创建类并实现Advisor接口,并且在类里面定义自己的pointCut和Advice
+                       解析有@Aspect注解的类,解析有@Around @Before方法创建Advice,通过注解中定义的value值创建PointCut对象,
+                       最终根据创建的Advice对象和PointCut对象创建Advisor对象
+
+2、在创建完切面后需要验证我们的切面是否为类的切面,即切面是否能拦截到类ClassFilter以及类的方法MethodMatcher
+
+
+
+
+@PointCut上的execution上匹配的路径下符合的beanClass就是我们增强的切面,是不准确的,因为有些时候,注解@Transaction @Cached注解的类,也需要切面增强
+
+
+
+
+execution切点范围,会从切面方法注解中value值获取切点的方法名,在通过方法名的获取方法上的@PointCut注解,在获取注解上的execution真正的表达式,进行进一步的解析
+
+
+
+
+
+--------------------------------------------------------------
+概念
+
+Joinpoint
+
+Pointcut   切点
+
+Advice   增强
+
+Target
+
+Introduction
+
+Weaving
+
+Advisor  切面
+
+
+
+

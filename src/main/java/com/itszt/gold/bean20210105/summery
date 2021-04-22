@@ -1,9 +1,17 @@
 基于注解
 
+ConfigurationClassPostProcessor源码解析
+
 ConfigurationClassPostProcessor implements  BeanDefinitionRegistryPostProcessor
 操作BeanDefinition并加入registry中
 
 AnnotatedBeanDefinition的实现类是ScanAnnotatedBeanDefinition
+
+
+@PropertySource注解,通过扫描类获取该注解并封装成BeanDefinition
+
+@Import进来的类可以实现一些接口,但是必须是@Import进来,如果通过@Component进来的,则不会调用实现的方法
+
 
 @PropertySource
 @ComponentScan

@@ -1,0 +1,28 @@
+doScan ClassPathBeanDefinitionScan 自定义扫描包路径
+
+ImportBeanDefinitionRegistrar自定义无注解类,扫描注入bean
+
+CachingMeteDataReaderFactory 传入参数resourcesloader 获取 metadate对象 bean的元数据对象
+
+我们可以创建一个类实现ImportBeanDefinitionRegistrar接口,覆写其方法
+
+依赖注入
+
+1.收集注解
+
+2.根据收集的注解完成依赖注入
+
+3.依赖注入的是代理对象
+
+4.用代理对象调用的时候,在advice里面根据@DI的配置的调用
+
+
+
+
+resources/META-INF/spring.factories
+
+
+springFactoriesLoader.loadFactoryNames(InvokeHandler.class,ClassUtils.getDefaultClassLoader());
+spring工程的扩展
+
+springboot方式的扩展
