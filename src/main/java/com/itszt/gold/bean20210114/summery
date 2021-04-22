@@ -1,0 +1,29 @@
+代理的生成和的链式调用流程
+
+1.切面的排序
+
+
+注解形式的排序
+先按的注解排序,注解先是Around before after AfterReturning AfterThrowing,
+注解顺序一直则在按自然顺序排序
+
+自定义切面实现Advisor接口可以实现Orderd接口也可以在实现类上加注解@Order(数字)根据注解和实现的Orderd接口来排序
+
+自定义切面和注解切面排序(整个排序是针对orderd接口和@Order注解的排序)
+1.默认切面永远排第一
+2.自定义切面根据实现的排序接口和排序注解排序
+3.注解形式的切面排序,按原样返回
+
+针对存在@Aspect注解切面,添加了一个默认的切面 DefaultPointCutAdvisor,解决参数传递问题的
+在切面容器中在第一个位置又添加一个默认切面ExposeInvocationInterceptor.ADVISOR,这个切面就
+做了一件事情,就是将methodInvocation丢到了ThreadLocal中,我们可以直接从ThreadLocal拿到参数,
+@Aspect是链式调用,解决了参数传递问题,在注解方法中可以直接获取MethodInvocation
+
+2.代理生成
+
+
+
+
+
+
+3.链式调用流程
