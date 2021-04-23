@@ -27,6 +27,20 @@
 通过反射创建代理实例,就算你设置为fasle没有实现代理的接口,也会使用cglib代理的
 @EnableAspectJAutoProxy(proTargetClass=false) 表示使用JDK的代理
 
+@EnableAspectJAutoProxy(proTargetClass=fasle,exposeProxy=true) 设置exposeProxy=true,如果使用JDK动态代理实现某接口的两个方法,A方法和的B方法,在A方法中调用了的B方法,我们使用切面在每个方法前
+加入@Before方法进行前置增强,但是我们发现在调用A方法时切面增强,但是A方法内在调用B方法时没有前置增强,因为A方法和B方法的单独调用都是代理对象.方法()调用,而在A方法中调用B方法,则是this.B()的调用,即是
+当前对象.B()的调用,不是代理对象调用的B方法,所有没有前置增强效果,对于这种情况Spring也给出了解决方法,即:
+
+设置exposeProxy=true,并且对于this.B()的调用替换为((强转为被代理对象类型)(AopContext.currentProxy().B())方法的调用
+
+
+在一个类中有多个方法,只有其中一个方法被@TranSactional注解修饰,所以该类需要生成代理对象,但是在调用@TranSactional修饰的方法的时候我们需要去先去调用切面增强,在去调用方法本身,而没有@TranSactional注解
+修饰的方法,则只需要调用本身方法,即直接通过反射调用即可
+
+--------------------------------------------------------------------------------------------------------------------------
+SpringAop只作用于Bean,而AspectJ能够在编译期,类加载期对字节码进行更改.
+
+--------------------------------------------------------------------------------------------------------------------
 jdk的动态代理目标对象必须实现接口,代理类实现InvocationHandler接口覆写invoke方法,将代理增强功能写在invoke方法中,并调用被代理类方法,
 通过Proxy.newProxyInstance（被代理接口类加载器,被代理类接口,实现Invocationhandler接口的类）;
 
@@ -90,9 +104,21 @@ IUserDao iud = (IUserDao) Proxy.newProxyInstance(ud.getClass().getClassLoader(),
                     }
 
 
+----------------------------------------------------------------------------------------------
+AopConfigUtils中auto-proxy creator的beanName为AUTO_PROXY_CREATOR_BEAN_NAME=org.springframework.aop.config.internalAutoProxyCreator
+我们可以自己提前实例化这个Bean,在实现的BeanDefinitionRegistryPostProcessor接口中的类中提前实例化AnnotationAwareAspectJAutoProxyCreator为该bean的实例对象
+bean.setInterceptorNames(beanName);
 
+也可以实现BeanPostProcessor接口和PriorityOrder接口,覆写postProcessAfterInitialization方法,判断是否是AnnotationAwareAspectJAutoProxyCreator这个Bean对象,设置bean.setInterceptorNames(beanName);,并返回bean
 
+bean.setInterceptorNames(beanName)是设置全局拦截器,设置的beanName所在的类必须实现MethodInterceptor接口,覆写invoke方法做全局的增强
+
+-----------------------------------------------------------------------------------------
+ProxyFactory = JdkDynamicAopProxy = 当前实例化的bean是一一对应的,每一个bean都有一个自己的ProxyFactory和自己JdkDynamicAopProxy
+ProxyFactory 设置了所有当前bean的切面实例,ProxyFactory设置了实现targetSource接口的实例(其中包装了被代理实例)
+--------------------------------------------------------------------------------------------
 
 
 
 3.链式调用流程
+
