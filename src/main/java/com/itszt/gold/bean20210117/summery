@@ -2,6 +2,14 @@
 
 1.链式调用过程
 
+
+proceed方法调用拦截器链
+
+mm.isruntime返回值为true的时候, advice才是InterceptorAndDynamicMethodMatcher类型
+
+完成dm.methodMatcher.matches(this.method,targetClass,this.arguments)
+
+
 2.代理提前生成
 
 3.scopedProxy

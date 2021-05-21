@@ -1,4 +1,4 @@
-代理的生成和的链式调用流程
+代理的生成和链式调用流程
 
 1.切面的排序
 
@@ -119,6 +119,18 @@ ProxyFactory 设置了所有当前bean的切面实例,ProxyFactory设置了实�
 --------------------------------------------------------------------------------------------
 
 
+首先来看this.advised.exposeProxy这个属性，这在@EnableAspectJAutoProxy注解中可以配置，
+当为true时，会将该代理对象设置到当前线程的ThreadLocal对象中，这样就可以通过AopContext.currentProxy拿到代理对象。
+在Service实现类中调用本类中的另一个方法时，事务不会生效，这是因为直接通过this调用就不会调用到代理对象的方法，而是原对象的，所以事务切面就没有生效。因此这种情况下就可以从当前线程的ThreadLocal对象拿到代理对象，不过实际上直接使用@Autowired注入自己本身也可以拿到代理对象。
+
+接下来就是通过getInterceptorsAndDynamicInterceptionAdvice拿到执行链
+
+
+
+
+
 
 3.链式调用流程
+
+
 
