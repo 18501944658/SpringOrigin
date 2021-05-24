@@ -2,8 +2,11 @@
 
 1.链式调用过程
 
+当前方法没有拦截器的链,则说明方法不需要增强
 
-proceed方法调用拦截器链
+proceed方法调用拦截器链,去调用advice逻辑
+
+proceed方法是一个递归调用,没处理一个advice都会索引位置递增1,再次调用proceed方法
 
 mm.isruntime返回值为true的时候, advice才是InterceptorAndDynamicMethodMatcher类型
 

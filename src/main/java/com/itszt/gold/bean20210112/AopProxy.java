@@ -5,6 +5,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
 @Component
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass = true,exposeProxy = true)
 public class AopProxy {
+
 }
