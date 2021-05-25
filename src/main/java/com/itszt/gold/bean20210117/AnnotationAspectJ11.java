@@ -8,14 +8,17 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Administrator
+ */
 @Component
 @Aspect
-public class AnnotationAspectJ {
+public class AnnotationAspectJ11 {
 
 
 
-    //    @Pointcut(value = "execution(public  * com.itszt.gold.bean20210117.*.*(..))")
-    @Pointcut("this(com.itszt.gold.bean20210117.StudentServiceImpl)")
+        @Pointcut(value = "execution(public  * com.itszt.gold.bean20210117.*.*(..))")
+//    @Pointcut("this(com.itszt.gold.bean20210117.StudentServiceImpl)")
     public void pc1() {
     }
 
