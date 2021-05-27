@@ -15,4 +15,54 @@ mm.isruntime返回值为true的时候, advice才是InterceptorAndDynamicMethodMa
 
 2.代理提前生成
 
+多例不会提前加载,所以我们需要在自定义切面,前完成目标类的bean加载
+这里强行将AOP的入口类Bean给删除了,所以生成代理的先决入口都没了
+public class CustomTargetSource extends AbstractBeanFactoryBasedTargetSource {
+    @Override
+    public Object getTarget() throws Exception {
+        return getBeanFactory().getBean(getTargetBeanName());
+    }
+}
+
+
+@Component
+public class CustomTargetSourceCreator extends AbstractBeanFactoryBasedTargetSourceCreator {
+
+    @Override
+    protected AbstractBeanFactoryBasedTargetSource createBeanFactoryBasedTargetSource(Class<?> beanClass, String beanName) {
+        if (getBeanFactory() instanceof ConfigurableListableBeanFactory) {
+            if(beanClass.isAssignableFrom(StudentServiceImpl.class)) {
+                return new CustomTargetSource();
+            }
+        }
+        return null;
+    }
+}
+
+
+
+自定义targetSource类 继承AbstractBeanFactoryBasedTargetSourceCreator类  实现方法,创建多例实例
+,提前代理生成,代理类还没有实例化,为何为多例,因为多例为懒加载
+
 3.scopedProxy
+
+多例bean被引用使用@Autowired,多例是懒加载,但是当被引用时会提前初始化触发getBean操作,所以每次调用多例bean方法,都是的同一个Bean的操作
+
+proxyMode为使用代理模式,即cglib代理,这样每次调用方法前,都是代理对象中调用getBean获取多例的目标对象,所以每次只要一
+调用方法就会切面先去getBean,获取目标对象,在用目标对象再去调用方法,而每次getBean获取的对象都不一样,因为目标对象是
+多例懒加载
+
+
+搞不定 用代理
+
+
+当使用代理的注入的时候,实际上容器中有2个BeanDefinition,一个是代理的Bean,一个是多例Bean本身的
+
+@Component
+@Scope(value = DefaultListableBeanFactory.SCOPE_PROTOTYPE, proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class ScopedProxyBean {
+
+    public void code() {
+        System.out.println(this.hashCode());
+    }
+}
