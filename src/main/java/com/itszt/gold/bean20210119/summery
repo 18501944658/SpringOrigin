@@ -1,7 +1,23 @@
 Spring的实战代码案例2之巩固AOP
 
-1. 自定义dvisor案例
+1. 自定义advisor案例
+
+创建切面调用的时候,再生成advisor的过程中需要对所有的advisor进行的扫描匹配对应的method,这时候就是当前
+类对象的匹配
+
+当我们进行每个Bean实例化最后要进行AOP的匹配获取,需要遍历关联的Advisor匹配其方法,这时候是用代理对象.方法
+
+//拿原始方法对象,这个方法上才有注解
+AopUtils.getMostSpecificMethod(method,targetClass);
+
+找桥接方法 对于T泛型,编译器是不认的,它会帮我们再生成一个新的代理Object类型
+
 
 2.带分布式锁的缓存框架
+
+
+
+
+
 
 3.基于参数做动态路由
