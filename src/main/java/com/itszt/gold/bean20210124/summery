@@ -134,7 +134,7 @@ resource.getConnection();
 2.REQUIRES_NEW传播属性
 
 
-
+新建事务,如果当前存在事务,把当前事务挂起
 
 
 
