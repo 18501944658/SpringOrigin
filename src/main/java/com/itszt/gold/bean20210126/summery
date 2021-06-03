@@ -51,7 +51,7 @@ private TransactionTemplate transactionTemplate;
         });
 
 编程事务相对注解事务更灵活,但是注解事务更简单
-编程事务和注解事务底层代码是一样的,唯一区别编程事务是控制粒度更细,不存在事务传播属性
+编程事务和注解事务底层代码是一样的,唯一区别编程事务是控制粒度更细,不存在事务传播属性这个特性,默认为REQUIRED
 
 当我们在业务代码中涉及使用mysql redis 和mongdb时,我们使用注解事务 redis和mongdb都会占用数据库连接池资源得不到释放,所以我们
 可以这时候使用编程式事务,将mysql的业务代码放入transactionTemplate.execute中执行,少占用资源
@@ -70,5 +70,9 @@ TransactionSynchronizationManager对象中完成注册调用其中registerSynchr
 public void registerSynchronization(TransactionSynchronization synchronization)
 中完成注册才能在事务提交时被调用执行
 
+
+spring永远没法控制异步事务的
+
 3.缓存切面
+
 
