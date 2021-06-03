@@ -4,7 +4,71 @@ spring事务传播精讲2
 
 如果当前存在事务,则在嵌套事务内执行,如果当前没有事务,则执行与PROPAGATION_REQUIRED类似的操作.
 
+
+jdbc的回滚点, connection.setSavepoint("tag")
+
+开启事务这,NESTED传播属性的事务只做了一件事,就是开启回滚点设置
+
+当事务设置传播属性设置为NESTED,开启事务时,有事务则嵌套,没有则创建,开启事务即设置savepoint回滚点,
+执行完业务逻辑无异常则提交事务是将回滚点savepoint抹去设置为null,有异常则是回滚当前事务到设置的回滚点
+
+第一次创建事务是没有savepoint的为null
+
+
+抛出的异常和我们自定义的异常不是匹配的,找super,判断我们抛出的异常是不是throw error 或者runtimeexception的,如果是则走rollback
+如果都不是则会走commit
+
+rollbackFor 匹配就rollback 否则就commit
+
+注解事务控制粒度太大了,如果A方法使用PROPAGATION_REQUIRED事务,A调用的B方法使用PROPAGATION_REQUIRED_NEW事务,如果B方法处理时间
+较长,则导致A方法事务被挂起较长,从而过度浪费资源
+
 2.编程式事务
+
+控制粒度更小的事务
+
+@Autowired
+private TransactionTemplate transactionTemplate;
+
+
+  @Bean
+    public TransactionTemplate transactionTemplate(PlatformTransactionManager platformTransactionManager) {
+        TransactionTemplate transactionTemplate = new TransactionTemplate();
+        transactionTemplate.setTransactionManager(platformTransactionManager);
+        return transactionTemplate;
+    }
+
+    使用:
+
+    /***下面就是2个完全独立的事务***/
+    /**这样一个execute代码块代表一个事务,一旦execute方法执行完后就会释放连接***/
+    transactionTemplate.execute(status->{
+     处理逻辑1
+    });
+
+     transactionTemplate.execute(status->{
+         处理逻辑2
+        });
+
+编程事务相对注解事务更灵活,但是注解事务更简单
+编程事务和注解事务底层代码是一样的,唯一区别编程事务是控制粒度更细,不存在事务传播属性
+
+当我们在业务代码中涉及使用mysql redis 和mongdb时,我们使用注解事务 redis和mongdb都会占用数据库连接池资源得不到释放,所以我们
+可以这时候使用编程式事务,将mysql的业务代码放入transactionTemplate.execute中执行,少占用资源
+
+
+
+
+
+
+TransactionSynchronizationManager类提供我们一些操作状态信息,这样我们可以根据当前事务状态设置触发器模式,做相应的操作,适配器模式
+我们可以继承
+public abstract class TransactionSynchronizationAdapter implements TransactionSynchronization, Ordered
+抽象方法继承,在覆写其中个别方法,来完成适配器模式的开发,但是在我们继承的子类必须在
+TransactionSynchronizationManager对象中完成注册调用其中registerSynchronization方法,并将子类继承TransactionSynchronizationAdapter的
+对象传入
+public void registerSynchronization(TransactionSynchronization synchronization)
+中完成注册才能在事务提交时被调用执行
 
 3.缓存切面
 
