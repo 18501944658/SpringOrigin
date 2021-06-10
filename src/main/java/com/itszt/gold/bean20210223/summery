@@ -1,0 +1,13 @@
+JSON参数解析和视图响应
+
+1.JSON参数解析
+
+顶层接口实现HttpMessageConverter
+
+MappingJackson2HttpMessageConverter   json解析类
+
+@RequestBody
+
+2.返回值处理
+
+3.视图响应

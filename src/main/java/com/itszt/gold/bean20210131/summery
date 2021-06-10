@@ -2,7 +2,88 @@ Spring的缓存切面和异步切面
 
 1.缓存切面
 
+缓存切面入口类注入 @EnableCacheing
+
+cacheNames是对应不同的缓存的区分
+
+ @Cacheable(cacheNames = "redisCache",key = "'jack' + #id")
+    @Override
+    public String queryData(String id) {
+        System.out.println("======CacheServiceImpl.queryData");
+        List<ConsultConfigArea> areas = commonMapper.queryAreaById(id);
+        return JSONObject.toJSONString(areas);
+    }
+
+    @CachePut(cacheNames = "redisCache",key = "'jack' + #id")
+    @Override
+    public String putCache(String id) {
+        System.out.println("======CacheServiceImpl.queryData");
+        List<ConsultConfigArea> areas = commonMapper.queryAreaById(id);
+        return JSONObject.toJSONString(areas);
+    }
+
+    @Cacheable(cacheNames = "redisCache",key = "'jack' + #id")
+    @Override
+    public String getCache(String id) {
+        return null;
+    }
+
+    @Cacheable(cacheNames = "mapCache",key = "'jack' + #id")
+    @Override
+    public String mapCache(String id) {
+        System.out.println("=========CacheServiceImpl.mapCache");
+        return "数据存储在map中";
+    }
+
+我们不管使用哪种缓存,我们如果比如使用redis,我们使用spring管理缓存,我们就要将redis交给spring管理然后我们使用spring的操作来使用缓存
+
+将缓存交给Spring管理的需要做的:
+
+1.我们需要实现Cache接口,并覆写方法的,方法中用redis操作就行`
+
+2.然后再将缓存加入到缓存管理器中CahceManager
+
+
+public class RedisCache implements Cache
+
+@Cacheable
+CacheableOperation extends Cacheperation
+@CacheEvict
+CacheEvictOperation   extends Cacheperation
+@CachePut
+CachePutOperation  extends Cacheperation
+
+
+CacheOperationContext 缓存切面上下文对象,封装了所有的缓存信息
+
+
+
 2.异步切面
+
+@Async 就是在方法被调用前创建一个线程,在线程run方法中调用当前方法
+
+支撑@Async注解 入口类注解@EnableAsync 这时候事务就不生效了 不具有传播属性了
+
 
 
 3.@Transaction和@Async注解的问题
+
+@Async就是切面执行链在Callable线程中执行,她不是走的切面注册,是单独的装饰模式切面注册
+
+
+@EnableScheduling  @Scheduled 不是切面了,这个不会生成切面
+
+总结
+
+@Async 会生成切面,是单独的底层实现注入切面,不是走的传统的模式,但是结果是一样的
+
+
+
+
+ @Scheduled 在程序启动后就开始运行了,他没有走切面,只是一个定时程序
+
+
+
+ 异步切面和事务的执行顺序
+
+ 异步切面先执行则不存在事务的传播性

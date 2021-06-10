@@ -1,0 +1,58 @@
+缓存框架和springmvc零配置原理
+
+1.缓存框架
+
+一级缓存 本地缓存支持可配置可扩展
+
+二级缓存
+
+三级缓存  可能是调数据库其它数据源
+
+装饰者模式
+
+
+2.servlet规范
+
+spring 上下文
+
+springMVC 上下文
+
+@EnableWebMvc 一个注解搞定mvc
+
+嵌入式tomcat
+
+取代web.xml用到的是tomcat的spi技术
+
+tomcat在启动的过程中
+一定会加载:
+spring-web的包下有META-INF/services/javax.servlet/ServletContainerInitializer,tomcat启动就会加载这个文件
+
+@HandlesTypes(WebApplicationInitializer.class)
+public class SpringServletContainerInitializer implements ServletContainerInitializer {
+
+
+收集所有的实现了WebApplicationInitializer接口的方法遍历
+
+@HandlesTypes(WebApplicationInitializer.class)
+public class SpringServletContainerInitializer implements ServletContainerInitializer {
+
+
+3.springmvc零配置启动
+
+ContextLoaderListener负责加载非controller层的bean的容器
+
+DispatcherServlet负责controller层的bean的容器
+
+tomcat启动必然会调到init方法,HttpServletBean中的init方法
+
+两个ioc容器 一个controller 一个非controller
+
+
+请求  DispatcherServlet
+
+
+url如何访问到controller中的方法
+
+/***获取请求的参数,将请求的参数放到threadlocal中我门需要的时候直接获取**/
+ServletRequestAttributes servletRequestAttributes=(ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+HttpServletRequest request=servletRequestAttributes.getRequest();
